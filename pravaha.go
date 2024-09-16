@@ -12,8 +12,13 @@ type apiConfig struct {
 
 func startServer(apiCfg *apiConfig) {
 
-	mux := http.NewServeMux()
+	muxV1 := http.NewServeMux()
 
+	muxV1.HandleFunc("/healthz", handlerReadiness)
+	muxV1.HandleFunc("/err", handlerError)
+
+	mux := http.NewServeMux()
+	mux.Handle("/v1/", http.StripPrefix("/v1", muxV1))
 	server := http.Server{
 		Addr:    ":" + apiCfg.port,
 		Handler: mux,
