@@ -19,6 +19,7 @@ func startServer(apiCfg *apiConfig) {
 	muxV1.HandleFunc("GET /healthz", handlerReadiness)
 	muxV1.HandleFunc("GET /err", handlerError)
 	muxV1.HandleFunc("POST /users", apiCfg.handlerUserCreate)
+	muxV1.HandleFunc("GET /users", apiCfg.middlewareAuth(apiCfg.handlerGetAllUsers))
 
 	mux := http.NewServeMux()
 	mux.Handle("/v1/", http.StripPrefix("/v1", muxV1))

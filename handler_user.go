@@ -54,7 +54,7 @@ func (apiCfg *apiConfig) handlerUserCreate(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	newUser, createUserErr := apiCfg.DB.CreateUser(r.Context(), database.CreateUserParams{
+	newDBUser, createUserErr := apiCfg.DB.CreateUser(r.Context(), database.CreateUserParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
@@ -68,5 +68,17 @@ func (apiCfg *apiConfig) handlerUserCreate(w http.ResponseWriter, r *http.Reques
 		return
 	}
 
-	internal.RespondWithJson(w, http.StatusCreated, databaseUserToUser(&newUser))
+	internal.RespondWithJson(w, http.StatusCreated, databaseUserToUser(&newDBUser))
+}
+
+func (apiCfg *apiConfig) handlerGetAllUsers(w http.ResponseWriter, r *http.Request, _ database.User) {
+
+	dbUsers, getAllUsersErr := apiCfg.DB.GetAllUsers(r.Context())
+
+	if getAllUsersErr != nil {
+		internal.RespondWithError(w, http.StatusInternalServerError, getAllUsersErr.Error())
+		return
+	}
+
+	internal.RespondWithJson(w, http.StatusOK, databaseUsersToUsers(dbUsers))
 }
