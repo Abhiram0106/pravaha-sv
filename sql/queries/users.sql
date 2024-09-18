@@ -4,7 +4,7 @@ INSERT INTO users (
 ) VALUES (
 	$1, $2, $3, $4, $5, encode(sha256(random()::text::bytea), 'hex')
 )
-RETURNING id, created_at, updated_at, name, api_key;
+RETURNING *;
 
 -- name: GetUserByApiKey :one
-SELECT id, created_at, updated_at, name, api_key FROM users WHERE api_key=$1 LIMIT 1;
+SELECT * FROM users WHERE api_key=$1 LIMIT 1;

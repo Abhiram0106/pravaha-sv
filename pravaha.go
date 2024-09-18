@@ -8,9 +8,8 @@ import (
 )
 
 type apiConfig struct {
-	port      string
-	jwtSecret string
-	DB        *database.Queries
+	port string
+	DB   *database.Queries
 }
 
 func startServer(apiCfg *apiConfig) {

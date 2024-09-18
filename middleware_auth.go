@@ -8,7 +8,7 @@ import (
 	"github.com/Abhiram0106/pravaha-sv/internal/database"
 )
 
-type authedHandler func(w http.ResponseWriter, r *http.Request, user database.GetUserByApiKeyRow)
+type authedHandler func(w http.ResponseWriter, r *http.Request, user database.User)
 
 func (apiCfg *apiConfig) middlewareAuth(authedHandler authedHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
